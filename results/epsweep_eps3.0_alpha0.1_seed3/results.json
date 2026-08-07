@@ -1,0 +1,232 @@
+{
+  "final_metrics": {
+    "f1": 0.12057228914528424,
+    "f1_default": 0.06634045949010878,
+    "f1_macro": 0.06337513823013347,
+    "accuracy": 0.06686801377469898,
+    "accuracy_default": 0.28954832730091007,
+    "auc_roc": 0.23607148291733693,
+    "optimal_threshold": 0.4349461793899536
+  },
+  "round_metrics": [
+    {
+      "round": 1,
+      "f1": 0.15123536385514594,
+      "f1_default": 0.0012313754463735994,
+      "f1_macro": 0.5399895397250591,
+      "accuracy": 0.8685251324336634,
+      "accuracy_default": 0.9351933970932509,
+      "auc_roc": 0.5284300727602512,
+      "optimal_threshold": 0.4939182698726654,
+      "avg_compression_ratio": 0.11875,
+      "avg_latency_ms": 10.614080000000001,
+      "total_compressed_bytes": 45784
+    },
+    {
+      "round": 2,
+      "f1": 0.23734514261546175,
+      "f1_default": 0.18340227697038475,
+      "f1_macro": 0.5894113604495832,
+      "accuracy": 0.8912965315563652,
+      "accuracy_default": 0.8217678595683822,
+      "auc_roc": 0.5668397312695216,
+      "optimal_threshold": 0.501798152923584,
+      "avg_compression_ratio": 0.11875,
+      "avg_latency_ms": 10.614080000000001,
+      "total_compressed_bytes": 45784
+    },
+    {
+      "round": 3,
+      "f1": 0.120831129569279,
+      "f1_default": 0.017723780596748256,
+      "f1_macro": 0.06722272629722909,
+      "accuracy": 0.07030369855461541,
+      "accuracy_default": 0.7803638629880869,
+      "auc_roc": 0.31853711188620587,
+      "optimal_threshold": 0.4450076222419739,
+      "avg_compression_ratio": 0.11875,
+      "avg_latency_ms": 10.614080000000001,
+      "total_compressed_bytes": 45784
+    },
+    {
+      "round": 4,
+      "f1": 0.12075511573933244,
+      "f1_default": 0.0065930742476939365,
+      "f1_macro": 0.06608912783571702,
+      "accuracy": 0.06928897304984939,
+      "accuracy_default": 0.7375536326374074,
+      "auc_roc": 0.23404665395730392,
+      "optimal_threshold": 0.43383339047431946,
+      "avg_compression_ratio": 0.11875,
+      "avg_latency_ms": 10.614080000000001,
+      "total_compressed_bytes": 45784
+    },
+    {
+      "round": 5,
+      "f1": 0.1209050485381754,
+      "f1_default": 0.07772157080616392,
+      "f1_macro": 0.06820163926656654,
+      "accuracy": 0.07118259466110566,
+      "accuracy_default": 0.495977052821656,
+      "auc_roc": 0.3182510202199478,
+      "optimal_threshold": 0.44552525877952576,
+      "avg_compression_ratio": 0.11875,
+      "avg_latency_ms": 10.614080000000001,
+      "total_compressed_bytes": 45784
+    },
+    {
+      "round": 6,
+      "f1": 0.12075557062544871,
+      "f1_default": 0.06590199538482422,
+      "f1_macro": 0.06504222596785617,
+      "accuracy": 0.0683621371557324,
+      "accuracy_default": 0.3402047028931662,
+      "auc_roc": 0.2629567733656758,
+      "optimal_threshold": 0.43283671140670776,
+      "avg_compression_ratio": 0.11875,
+      "avg_latency_ms": 10.614080000000001,
+      "total_compressed_bytes": 45784
+    },
+    {
+      "round": 7,
+      "f1": 0.12048754795345473,
+      "f1_default": 0.07750026420544616,
+      "f1_macro": 0.0624072437108531,
+      "accuracy": 0.06600509759741764,
+      "accuracy_default": 0.3723003907092692,
+      "auc_roc": 0.32416127168807807,
+      "optimal_threshold": 0.43396490812301636,
+      "avg_compression_ratio": 0.11875,
+      "avg_latency_ms": 10.614080000000001,
+      "total_compressed_bytes": 45784
+    },
+    {
+      "round": 8,
+      "f1": 0.12044478860882206,
+      "f1_default": 0.07034461757092829,
+      "f1_macro": 0.061586336785799986,
+      "accuracy": 0.06527801081841207,
+      "accuracy_default": 0.2682390917008238,
+      "auc_roc": 0.27850076131667933,
+      "optimal_threshold": 0.4133862257003784,
+      "avg_compression_ratio": 0.11875,
+      "avg_latency_ms": 10.614080000000001,
+      "total_compressed_bytes": 45784
+    },
+    {
+      "round": 9,
+      "f1": 0.12054848127949132,
+      "f1_default": 0.07004352609173961,
+      "f1_macro": 0.0627436287480722,
+      "accuracy": 0.066308716252387,
+      "accuracy_default": 0.22327157090694089,
+      "auc_roc": 0.2669819439407337,
+      "optimal_threshold": 0.4422552287578583,
+      "avg_compression_ratio": 0.11875,
+      "avg_latency_ms": 10.614080000000001,
+      "total_compressed_bytes": 45784
+    },
+    {
+      "round": 10,
+      "f1": 0.12057228914528424,
+      "f1_default": 0.06634045949010878,
+      "f1_macro": 0.06337513823013347,
+      "accuracy": 0.06686801377469898,
+      "accuracy_default": 0.28954832730091007,
+      "auc_roc": 0.23607148291733693,
+      "optimal_threshold": 0.4349461793899536,
+      "avg_compression_ratio": 0.11875,
+      "avg_latency_ms": 10.614080000000001,
+      "total_compressed_bytes": 45784
+    }
+  ],
+  "communication_stats": {
+    "star_traffic_MB": 6.2608,
+    "core_traffic_MB": 0.14747,
+    "edge_traffic_MB": 6.2608,
+    "speedup": 42.45473655658778,
+    "reduction_pct": 97.64455021722463
+  },
+  "config": {
+    "T": 10,
+    "eta": 0.01,
+    "E_local": 5,
+    "batch_size": 32,
+    "N": 20,
+    "M": 4,
+    "K": 5,
+    "input_dim_iotid20": 79,
+    "input_dim_cicids": 76,
+    "hidden_dims": [
+      64,
+      32,
+      16
+    ],
+    "output_dim": 2,
+    "alpha": 0.1,
+    "num_seeds": 5,
+    "seed_range": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "epsilon_total": 3.0,
+    "delta": 1e-05,
+    "clip_norm": 1.0,
+    "beta_F": 0.9,
+    "alpha_s": 0.5,
+    "beta_s_coeff": 0.3,
+    "gamma_s": 0.2,
+    "device_types": {
+      "camera": {
+        "sigma": 1.0,
+        "weight": 0.4
+      },
+      "thermostat": {
+        "sigma": 0.3,
+        "weight": 0.3
+      },
+      "bulb": {
+        "sigma": 0.1,
+        "weight": 0.3
+      }
+    },
+    "datasets": {
+      "iotid20": {
+        "name": "IoTID20",
+        "raw_path": "data/raw/IoTID20.csv",
+        "processed_path": "data/processed/iotid20_train.npz",
+        "test_path": "data/processed/iotid20_test.npz",
+        "partition_path": "data/processed/iotid20_partitions.json",
+        "total_samples": 625783,
+        "feature_dim": 80,
+        "normal_ratio": 0.064
+      },
+      "cicids2017": {
+        "name": "CICIDS2017",
+        "raw_path": "data/raw/CICIDS2017/",
+        "processed_path": "data/processed/cicids_train.npz",
+        "test_path": "data/processed/cicids_test.npz",
+        "partition_path": "data/processed/cicids_partitions.json",
+        "total_samples": 566934,
+        "feature_dim": 76
+      }
+    },
+    "oversample_minority": false,
+    "test_ratio": 0.2,
+    "metrics": [
+      "f1",
+      "accuracy",
+      "auc_roc",
+      "precision",
+      "recall"
+    ],
+    "processed_dir": "/root/autodl-tmp/HierFed-Matter-NSAC-DPBA/data/processed",
+    "seed": 3,
+    "dataset_name": "iotid20"
+  },
+  "elapsed_seconds": 1695.345392,
+  "exp_name": "epsweep_eps3.0_alpha0.1_seed3"
+}
