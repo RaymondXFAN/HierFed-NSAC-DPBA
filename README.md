@@ -1,125 +1,92 @@
-# HierFed-Matter-NSAC-DPBA: Open-Source Implementation
+# HierFed-Matter-NSAC-DPBA
 
-> Companion code for the paper: *Privacy-Utility Tradeoff via Dynamic Privacy Budgeting for Matter-Enabled Smart Home Anomaly Detection in B5G/6G Large-Scale Residential IoT*
+**Adaptive Fisher-Information-Based Privacy Budget Allocation for Hierarchical Federated Learning in 6G IoT Anomaly Detection**
 
-## Quick Start
+Code, raw result artifacts and analysis tooling accompanying the paper.
 
-```bash
-# 1. Install dependencies
-pip install -r requirements.txt
+---
 
-# 2. Download datasets (requires Kaggle CLI or manual download)
-bash data/download_data.sh
+## Overview
 
-# 3. Preprocess data
-python data/preprocess.py --dataset both --alpha 0.5 --N 50 --seed 1
+A three-layer hierarchical federated learning framework for privacy-preserving IoT
+anomaly detection:
 
-# 4. Run a single experiment
-python run_experiment.py --dataset iotid20 --alpha 0.5 --seed 1 --method proposed
+| Component | Role |
+|---|---|
+| **Matter topology** | hierarchical aggregation (device → gateway → core) |
+| **NSAC** | network-slice-aware compression (slice-adaptive gradient quantization) |
+| **DPBA-FIM** | dynamic per-device privacy-budget allocation driven by Empirical Fisher Information |
 
-# 5. Run all experiments (5 seeds × 2 datasets × 2 alphas)
-bash run_all_seeds.sh
+At strict privacy budgets (ε ≤ 3) uniform DP collapses to near-random prediction.
+DPBA-FIM tracks per-device Fisher information and redistributes the noise budget
+under a fixed (ε, δ) budget, recovering partial utility while preserving formal DP
+guarantees under Rényi DP composition.
 
-# 6. Aggregate results for paper tables
-python run_experiment.py --aggregate_only --method proposed --dataset both
-```
+## Key findings
 
-## Architecture
+| # | Finding | Evidence |
+|---|---|---|
+| 1 | Uniform DP collapses at ε = 3 | AUC → ≈ 0.5, macro-F1 → 0.484 (degenerate majority-class predictor) |
+| 2 | DPBA-FIM recovers partial utility | AUC 0.5 → ≈ 0.59 at ε = 3, α = 0.5 |
+| 3 | Monotone privacy–utility frontier | AUC ≈ 0.834 at ε = 10 |
+| 4 | Communication reduction | ≈ 33× at the core network |
+| 5 | **CR × C interaction** | the optimal privacy budget ε\* shifts with the compression ratio C (**ANOVA F = 3.24, p = 0.0025**, n = 8, 120 runs) |
+| 6 | **Slice-level allocation does not pay off** | differentiating the compression ratio across slices consistently hurts; the joint arm A4 is **worst in 4/4 cells** (bw + k_ratio weights × 2 datasets) |
 
-```
-HierFed-Matter-NSAC-DPBA = HierFed-Matter + NSAC + DPBA-FIM
-
-┌─────────────┐     ┌──────────────────┐     ┌──────────┐
-│  IoT Device │────▶│  Matter Gateway  │────▶│   Cloud  │
-│  (local     │     │  (edge aggregate │     │ (global  │
-│   training) │     │  + NSAC compress │     │ aggregate│
-│   + DPBA    │     │  + DPBA noise)   │     │  server) │
-└─────────────┘     └──────────────────┘     └──────────┘
-```
-
-### Three Core Components
-
-1. **HierFed-Matter** (§4.1): Reuses Matter protocol's device→border-router→cloud topology for hierarchical FL aggregation. Core network traffic reduced from O(N) to O(M).
-
-2. **NSAC** (§4.2): Network-Slice-Aware Compression adapts gradient compression to 6G slice QoS:
-   - uRLLC: Top-k(0.1d) + 8-bit → 40× compression, latency ≤200 ms
-   - eMBB: Top-k(0.3d) + 16-bit → ~7× compression
-   - mMTC: Top-k(0.05d) + 8-bit → 80× compression
-
-3. **DPBA-FIM** (§4.3): Dynamic Privacy Budget Allocation via Fisher Information Matrix:
-   - FIM scalar EMA (β_F=0.9) for per-layer importance tracking
-   - Device sensitivity: S_i = 0.5σ_i + 0.3(1/n_i) + 0.2H_i
-   - Budget allocation: ε_{i,l}(t) = (ε_total/T) × (I_l/ΣI_l) × (S_i/ΣS_j)
-   - (ε≤3, δ=10⁻⁵)-DP with only 2.1% accuracy loss
-
-## Key Hyperparameters
-
-| Parameter | Value | Note |
-|-----------|-------|------|
-| T (rounds) | 100 | ε_r = ε_total/T = 0.03 |
-| K (devices/gateway) | 10 | N/K = M gateways |
-| ε_total | 3.0 | Total DP budget |
-| δ | 10⁻⁵ | DP failure probability |
-| C (clip norm) | 1.0 | Gradient clipping bound |
-| β_F | 0.9 | FIM EMA smoothing |
-| η (learning rate) | 0.01 | **Paper does not specify; adjust if needed** |
-| E_local (epochs) | 5 | **Paper does not specify; adjust if needed** |
-| batch_size | 32 | **Paper does not specify; adjust if needed** |
-
-⚠️ **η, E_local, and batch_size are not explicitly given in the paper.** The values above are reasonable defaults. If your original experiment used different values, update `configs/base.yaml`.
-
-⚠️ **Parameter count discrepancy**: Paper claims d=12,498 but the described architecture (Input(80)→FC128→FC64→FC32→FC16→FC2) actually has d=21,266 (including biases). Code uses `model.num_parameters` for the true count. This affects NSAC's k_s calculation. Verify with your original code.
-
-## Expected Results (Paper Targets)
-
-| Dataset | Method | F1 (α=0.5) | Speedup | MIA Success |
-|---------|--------|-------------|----------|-------------|
-| IoTID20 | Proposed | 0.924 ± 0.006 | 19.3× | 14.2% |
-| CICIDS2017 | Proposed | 0.891 ± 0.008 | — | — |
-| IoTID20 | DP-FedAvg | 0.798 | 1× | 18.3% |
-| IoTID20 | HierFed+DP | 0.915 | 10× | 15.7% |
-
-## Baselines Implemented
-
-| Method | Description |
-|--------|-------------|
-| FedAvg | Standard star-topology FL |
-| FedProx | Proximal-regularized FL |
-| HierFed | Hierarchical FL (no DP/NSAC) |
-| DP-FedAvg | Star-topology + uniform DP (ε=3) |
-| DP-Fed6G | Star-topology + adaptive DP |
-| Top-k+QSGD | Star-topology + uniform compression |
-| SAFEL-IoT | Adaptive DP (no FIM weighting) |
-| FedProx-DP | FedProx + uniform DP |
-| **HierFed+DP** | **Hierarchical + uniform DP** (key ablation) |
-
-## Project Structure
+## Repository layout
 
 ```
-├── README.md
-├── requirements.txt
-├── configs/         # YAML configs for hyperparameters
-├── data/            # Download + preprocess scripts
-├── models/          # 5-layer DNN
-├── core/            # NSAC, DPBA-FIM, HierFed, Simulator
-├── baselines/       # 9 baseline methods
-├── run_experiment.py  # Main entry point
-├── evaluate.py        # Metrics + MIA evaluation
-├── run_all_seeds.sh   # Batch runner
-└── 00_implementation_plan.md  # Detailed implementation spec
+HierFed-Matter-NSAC-DPBA/
+├── core/                     # simulator, DPBA-FIM, NSAC, hierarchical aggregation
+├── baselines/                # baseline runners
+├── models/                   # DNN backbone
+├── configs/                  # YAML configurations
+├── data/processed/           # dataset METADATA only (see "Data availability")
+├── results_alloc/            # Phase-3 four-arm ablation, bw weights (64 runs)
+├── results_alloc_kr/         # Phase-3 four-arm ablation, k_ratio weights (40 runs)
+├── results_v9_crxC/          # Phase-2 CR × C grid (120 runs)
+├── results_*/                # additional sweeps (ε, baselines, ablations)
+├── figs/, figs_dp/           # figures (PNG + PDF)
+├── run_experiment.py         # main training entry point
+├── run_baselines.py          # baseline comparison
+├── analyze_*.py              # analysis / statistics
+├── run_*.sh, gate_*.sh       # experiment drivers (incl. pre-flight gates)
+└── README.md, REPRODUCE.md, AI_USAGE.md, requirements.txt
 ```
+
+## Quick start
+
+Full step-by-step instructions — environment, data preparation, every experiment,
+analysis and expected numbers — are in **[REPRODUCE.md](REPRODUCE.md)**.
+
+## Data availability
+
+The large preprocessed tensors (`data/processed/*.npz`, ≈ 725 MB; individual files
+> 100 MB) are **not** bundled here because of hosting limits. Only lightweight
+metadata (device ids, feature names, label maps, partition JSONs) is included.
+
+The raw datasets are public, and the preprocessing / partitioning scripts are part
+of this repository, so the tensors can be regenerated — see
+[REPRODUCE.md §3](REPRODUCE.md).
+
+## Bilingual annotations
+
+Every script carries bilingual annotations: the author's **Chinese original** plus an
+English counterpart (`# EN: ...` for line comments, `--- EN ---` blocks inside
+docstrings). See [AI_USAGE.md](AI_USAGE.md).
 
 ## Citation
 
-If you use this code, please cite our paper:
-
 ```bibtex
-@article{hierfed_matter_nsac_dpba_2024,
-  title={Privacy-Utility Tradeoff via Dynamic Privacy Budgeting for Matter-Enabled Smart Home Anomaly Detection in B5G/6G Large-Scale Residential IoT},
-  ...
+@article{hierfed_matter_nsac_dpba,
+  title   = {Adaptive Fisher-Information-Based Privacy Budget Allocation for
+             Hierarchical Federated Learning in 6G IoT Anomaly Detection},
+  author  = {TODO},
+  journal = {TODO},
+  year    = {2026}
 }
 ```
 
 ## License
 
-MIT License
+TODO — specify before publication (e.g. MIT / Apache-2.0 / CC-BY-4.0).
