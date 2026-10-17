@@ -31,7 +31,7 @@ guarantees under Rényi DP composition.
 | 3 | Monotone privacy–utility frontier | AUC ≈ 0.834 at ε = 10 |
 | 4 | Communication reduction | ≈ 33× at the core network |
 | 5 | **CR × C interaction** | the optimal privacy budget ε\* shifts with the compression ratio C (**ANOVA F = 3.24, p = 0.0025**, n = 8, 120 runs) |
-| 6 | **Slice-level allocation does not pay off** | differentiating the compression ratio across slices consistently hurts; the joint arm A4 is **worst in 4/4 cells** (bw + k_ratio weights × 2 datasets) |
+| 6 | **Slice-level allocation does not pay off** | the joint arm A4 is **worst in 6/6 cells** across **3 datasets** (IoTID20, Gotham25, TII23) × 2 slice-weighting rules; A4 loses to A1 in **34 of 36 paired seeds** (binomial p ≈ 2×10⁻⁸) |
 
 ## Repository layout
 
@@ -48,7 +48,7 @@ HierFed-Matter-NSAC-DPBA/
 ├── results_*/                # additional sweeps (ε, baselines, ablations)
 ├── figs/, figs_dp/           # figures (PNG + PDF)
 ├── run_experiment.py         # main training entry point
-├── run_baselines.py          # baseline comparison
+├�es.py          # baseline comparison
 ├── analyze_*.py              # analysis / statistics
 ├── run_*.sh, gate_*.sh       # experiment drivers (incl. pre-flight gates)
 └── README.md, REPRODUCE.md, AI_USAGE.md, requirements.txt
@@ -90,3 +90,4 @@ docstrings). See [AI_USAGE.md](AI_USAGE.md).
 ## License
 
 TODO — specify before publication (e.g. MIT / Apache-2.0 / CC-BY-4.0).
+0 / CC-BY-4.0).

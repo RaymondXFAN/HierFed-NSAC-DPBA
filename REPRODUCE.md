@@ -252,11 +252,29 @@ Analysis (4-arm means, paired t / Wilcoxon, per-seed sign table):
 python final_check.py results_alloc results_alloc_kr
 ```
 
-**Expected** (paper): **A4 is the worst arm in all 4 cells**; A1 ≳ A3 > A2 > A4.
-Gotham25, n = 8 — A1 = 0.9957, A2 = 0.9950, A3 = 0.9972, A4 = 0.9938.
-IoTID20, n = 8 — A1 = 0.9719, A2 = 0.9695, A3 = 0.9715, A4 = 0.9630.
-The extreme `bw` rule inflates A4's variance (σ: 0.0135 → 0.0050 under `k_ratio`)
-but the A4 disadvantage persists — it is systematic, not noise.
+A third dataset is run with the generic driver, which handles both weighting rules:
+
+```bash
+DS=tii23 PAR=8 bash add_third_dataset.sh     # -> results_alloc_tii23 / results_alloc_tii23_kr
+```
+
+**Expected** (paper): **A4 is the worst arm in all 6 cells** (3 datasets × 2 rules), and
+loses to A1 in **34 of 36 paired seeds** (binomial two-sided p ≈ 2×10⁻⁸).
+
+| Dataset | Weights | A1 | A2 | A3 | A4 | Δ(A4−A1) | sign |
+|---|---|---|---|---|---|---|---|
+| Gotham25 | bw | 0.9957 | 0.9950 | 0.9972 | **0.9930** | −0.0027 | 2/8 |
+| Gotham25 | k_ratio | 0.9962 | 0.9952 | 0.9961 | **0.9941** | −0.0021 | 0/5 |
+| IoTID20 | bw | 0.9719 | 0.9695 | 0.9715 | **0.9567** | **−0.0152** | 0/8 |
+| IoTID20 | k_ratio | 0.9724 | 0.9695 | 0.9721 | **0.9641** | −0.0083 | 0/5 |
+| TII23 | bw | 0.9903 | 0.9893 | 0.9820 | **0.9519** | −0.0384 | 0/5 |
+| TII23 | k_ratio | 0.9903 | 0.9893 | 0.9881 | **0.9709** | −0.0194 | 0/5 |
+
+The extreme `bw` rule inflates A4's variance but the A4 disadvantage persists under
+the milder `k_ratio` rule — it is systematic, not noise. A3 (ε-only slicing) is
+**neutral overall** (17/36 seeds positive, p = 0.87) but **dataset-dependent**: it
+helps on Gotham25/bw (ΔAUC = +0.0015, 7/8 seeds, p = 0.039) and hurts on TII23/bw
+(ΔAUC = −0.0083, 0/5 seeds, p = 0.011).
 
 ---
 
